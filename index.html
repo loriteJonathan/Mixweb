@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.3.5/shaka-player.compiled.js"></script>
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; }
+        #video { width: 100%; height: 100%; }
+    </style>
+</head>
+<body>
+    <video id="video" controls autoplay playsinline></video>
+    <script>
+        const canales = {
+            "la1": { u: "https://tvup01.edge.milloh-cs.com/la1-neutra/la1-neutra.mpd", k: {"vQ/DQdRLXM2qLQPwvttd2w": "lyTwnq1RDegpCNm0TC2FBA", "JcMmPyUtVN6tKs4zG5xyyQ": "J7Hgw/XTOY0igyGbsZlPSA", "wJIOfOf0U9itAB5ozrBkXQ": "FYDWY7wGKDN/WX/hNWQ7UQ"} },
+            "la2": { u: "https://tvup01.edge.milloh-cs.com/la2/la2.mpd", k: {"KmWoCVXlUAOWUcquGzLumg": "kVMv0/ljz8ph0nU68bhBNg", "OiF2E6tMXYOZQ01nm7Q8pQ": "0dQaSOhe03jPx95y8Z7dHw", "YpP5Brn2XneDElUT0xOj+Q": "y91QpZqe6j7NGzuVxWlAwA"} },
+            "antena3": { u: "https://tvup01.edge.milloh-cs.com/antena3hd/antena3hd.mpd", k: {"FzvLeNM6Wue6c1etlHI/KA": "Hmn5U8iXTKz4XpwpxqDyzA", "ta7+N6OMVkKHbpkqtITh+g": "l0Db9irngR0X2H06jvDEQg", "xkiUP2xAXZGJobS8UYg4sA": "a0lawyKF1gDTM03ZvtUtWQ"} },
+            "cuatro": { u: "https://tvup01.edge.milloh-cs.com/cuatro/cuatro.mpd", k: {"hwiqZtGIWPuwqYdr8Mx4eA": "kUj5qQn0FCnn8wcJE+j6jQ", "OEg7W8IGU1yU29Kdc6KpCw": "xwJMknFrCn6oU6CIHOATFQ", "eP7K1eAUW3GRbhMvG8KTsg": "JPLKU5J6UTT7cC5hIfGuow"} },
+            "telecinco": { u: "https://tvup01.edge.milloh-cs.com/telecincohd/telecincohd.mpd", k: {"3vV2nu1hUtKzKqHHWmJHZA": "7QbfkA4LhFSag0xJmX3IrQ", "fKk7d3M0VNODDGCZatiSmw": "irmAn8eZAVpBw5uLnWq5pQ", "+uu7m4F0WdKWViVwhmahFA": "mhqpStsLFbUjg2xvQYQ3Jg"} },
+            "lasexta": { u: "https://tvup01.edge.milloh-cs.com/lasexta/lasexta.mpd", k: {"ilaiW+HtXGqUbtyEk9QtHQ": "AzKtewoFx/9YVM+wz4c3/g", "EXn6Fl2DVKWKAjd+uemtUg": "BdjWC0eaG78rmyF2Xf5j5g", "OhkuvxPgXFKEWdxmAx4tog": "gXnIa+jh862QU6quMzZd0CA"} },
+            "trece": { u: "https://tvup01.edge.milloh-cs.com/trece6/trece6.mpd", k: {"DRWFsL1nU1iDBdFQDaQopw": "Z4fDBvpJxAAcSjESeFGj9w", "jLHvto0LWjOr3oO7qn/Zgg": "5IzjT+pcTkYO4BIJayMKhg"} },
+            "bemad": { u: "https://tvup01.edge.milloh-cs.com/bemad/bemad.mpd", k: {"iUREQ3dPXkWD0qiBUJZoOQ": "h4gffi8XzB+WNHu63DSGbg", "efWnJZRVUrqBfsueYkJzcA": "H3l/uRDEJk004LMEXNQ2bw"} }
+        };
+
+        async function init() {
+            const video = document.getElementById('video');
+            const player = new shaka.Player(video);
+            const params = new URLSearchParams(window.location.search);
+            const canal = canales[params.get('ch')];
+            if (canal) {
+                player.configure({ drm: { clearKeys: canal.k } });
+                try { await player.load(canal.u); } catch (e) { console.error(e); }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
